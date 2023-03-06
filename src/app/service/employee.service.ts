@@ -6,7 +6,7 @@ import { Employee } from '../interface/employee';
 @Injectable({providedIn: 'root'})
 
 export class EmployeeService {
-  private readonly apiUrl = 'http://localhost:8080/app';
+  private readonly apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +27,7 @@ export class EmployeeService {
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/employee/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/employee/delete/${id}`);
   }
 
 

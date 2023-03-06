@@ -34,7 +34,7 @@
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="fa-solid fa-inbox float-right"></span>{{employee.email}}
+                        <span class="fa-solid fa-inbox float-right" ></span>{{employee.email}}
                     </li>
                     <li class="list-group-item">
                         <span class="fa-solid fa-phone float-right" id="phoneNumber"></span>Phone : {{employee.phoneNumber}}
@@ -45,7 +45,7 @@
                 </ul>
                 <div class="card-body">
                     <div class="float-right btn-group btn-group-sm">
-                        <button (click)="openModal(employee, 'edit')" type="button" class="btn btn-primary"
+                        <button (click)="openModal(employee, 'edit')" (click)="setGender(employee.gender)" type="button" class="btn btn-primary"
                             data-toggle="modal" data-target="#editEmployee">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
@@ -104,9 +104,22 @@
                                 class="form-control" id="imageUrl" placeholder="Image URL" />
                         </div>
                         <div class="form-group">
-                            <label for="phone">Gender</label>
-                            <input type="text" ngModel="{{ editEmployee?.gender }}" name="gender" class="form-control"
-                                id="imageUrl" placeholder="Gender" />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="{{editEmployee.gender}}" id="gender" value="Male">
+                                <label class="form-check-label" for="gender">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="{{editEmployee.gender}}" id="gender2" value="Female">
+                                <label class="form-check-label" for="gender">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="{{editEmployee.gender}}" id="gender3" value="Others">
+                                <label class="form-check-label" for="gender">Others</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="{{editEmployee.gender}}" id="gender4" value="Prefer Not To Say">
+                                <label class="form-check-label" for="gender">Prefer Not To Say</label>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">
@@ -142,7 +155,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             No
                         </button>
-                        <button (click)="onDeleteEmployee(deleteEmployee?.id)" class="btn btn-danger"
+                        <button (click)="onDeleteEmployee(deleteEmployee.id)" class="btn btn-danger"
                             data-dismiss="modal">
                             Yes
                         </button>
@@ -182,7 +195,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="text" ngModel name="phoneNumber" class="form-control" id="phoneNumber" placeholder="Phone"
+                            <input maxlength="10" type="text" ngModel name="phoneNumber" class="form-control" id="phoneNumber" placeholder="Phone"
                                 required />
                         </div>
                         <div class="form-group">
@@ -191,9 +204,22 @@
                                 placeholder="Image URL" required />
                         </div>
                         <div class="form-group">
-                            <label for="phone">Gender</label>
-                            <input type="text" ngModel name="gender" class="form-control" id="gender"
-                                placeholder="Gender" required />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio1" value="Male">
+                                <label class="form-check-label" for="inlineRadio1">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio2" value="Female">
+                                <label class="form-check-label" for="inlineRadio2">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio3" value="Others">
+                                <label class="form-check-label" for="inlineRadio3">Others</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio4" value="Prefer Not To Say">
+                                <label class="form-check-label" for="inlineRadio4">Prefer Not To Say</label>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">

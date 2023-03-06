@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   editEmployee: Employee;
   deleteEmployee: Employee;
   currentEmployee: Employee[];
+  setCurrentGender: HTMLElement;
 
   editModalBox: boolean = false;
   deleteModalBox: boolean = false;
@@ -34,6 +35,23 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
       this.getAllEmployees();
+  }
+
+  setGender(gender: string): void {
+    if(gender === 'Male') {
+        const ele = document.getElementById('gender') as HTMLInputElement;
+        ele.checked = true;
+    } else if(gender === 'Female') {
+        const ele = document.getElementById('gender2') as HTMLInputElement;
+        ele.checked = true;
+    } else if(gender === 'Others') {
+        const ele = document.getElementById('gender3') as HTMLInputElement;
+        ele.checked = true;
+    } else if(gender === 'Prefer Not To Say') {
+        const ele = document.getElementById('gender4') as HTMLInputElement;
+        ele.checked = true;
+    }
+    
   }
 
   //GETS ALL EMPLOYEES
