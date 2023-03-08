@@ -1,0 +1,285 @@
+<div class="container" id="main-container">
+    <div class="row" id="searchAdd">
+        <div class="col-md-6 col-xl-4 text-center" style="margin-bottom: 10px;">
+            <button (click)="openModal(null, 'add')" type="button" class="btn btn-dark" data-toggle="modal"
+                data-target="#addEmployee">
+                Add Employee
+            </button>
+        </div>
+        <div class="col-md-6 col-xl-4 text-center">
+            <button (click)="sortNameAZ()" type="button" class="btn-xsm btn-dark" style="margin-right: 10px;">Sort
+                A-Z</button>
+            <button (click)="sortNameZA()" type="button" class="btn-xsm btn-dark">Sort Z-A</button>
+        </div>
+        <div class="col-md-6 col-xl-4 text-center">
+            <form class="form-inline my-2 my-lg-0" id="search">
+                <input type="search" (ngModelChange)="searchEmployees(key.value)" #key="ngModel" ngModel name="key"
+                    id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required />
+            </form>
+        </div>
+    </div>
+    <!--EMPLOYEE CARDS-->
+    <div class="row">
+        <div *ngFor="let employee of employees" class="col-md-6 col-xl-4">
+            <div class="card">
+                <div class="card-body row" style="color: white">
+                    <!--EMPLOYEE IMAGE-->
+                    <div class="col-6">
+                        <a><img src="{{ employee?.imageUrl }}" alt=""
+                                class="img-fluid rounded-circle w-60 float-right" /></a>
+                    </div>
+                    <!--EMPLOYEE NAME AND JOB TITLE-->
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h3>{{ employee?.firstName }} {{employee?.lastName}}</h3>
+                        <p class="m-0">{{ employee?.jobTitle }}</p>
+                    </div>
+                </div>
+                <!--EMPLOYEE INFO-->
+                <ul class="list-group">
+                    <!--EMAIL-->
+                    <li class="list-group-item">
+                        <a style="color: black;" href="mailto:{{employee.email}}" target="_blank">{{employee.email}}</a>
+                    </li>   
+                    <!--PHONE #-->
+                    <li class="list-group-item">
+                        <span class="fa-solid fa-phone float-right" id="phoneNumber"></span>Phone : {{
+                        employee.phoneNumber }}
+                    </li>
+                    <!--GENDER-->
+                    <li class="list-group-item">
+                        <span  class="fa-solid fa-user float-right"></span>{{ employee.gender }}
+                    </li>
+                </ul>
+                <!--BUTTONS TO OPEN EDIT AND DELETE FORMS-->
+                <div class="card-body text-center">
+                    <div class="btn-group btn-group-sm" id="buttonSubmit">
+                        <button (click)="openModal(employee, 'edit')" (click)="setGender(employee.gender)" type="button"
+                            class="btn btn-primary block" data-toggle="modal" data-target="#editEmployee">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button (click)="openModal(employee, 'delete')" type="button" class="btn btn-danger block"
+                            data-toggle="modal" data-target="#deleteEmployee">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--EDIT MODAL BOX-->
+    <div *ngIf="editModalBox" class="modal fade" id="editEmployee" tabindex="-1" role="dialog"
+        aria-labelledby="editEmployeeLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!--FORM HEADER-->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeLabel">
+                        Edit Employee: {{ editEmployee.firstName | uppercase }} {{editEmployee.lastName | uppercase}}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!--FORM BODY-->
+                <div class="modal-body">
+                    <form #editForm="ngForm">
+                        <!--FIRST & LAST NAME-->
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" [(ngModel)]="editEmployee.firstName" name="firstName"
+                                class="form-control" id="firstName" aria-describedby="emailHelp" placeholder="First Name" />
+                            <label for="lastName">Last Name</label>
+                            <input type="text" [(ngModel)]="editEmployee.lastName" name="lastName"
+                                class="form-control" id="lastName" aria-describedby="emailHelp" placeholder="Name" />
+                        </div>
+                        <!--HIDDEN USER CODE-->
+                        <input type="hidden" [(ngModel)]="editEmployee.id" name="id" class="form-control" id="id"
+                            placeholder="Email" />
+                        <input type="hidden" [(ngModel)]="editEmployee.employeeCode" name="employeeCode"
+                            class="form-control" id="userCode" placeholder="Email" />
+                        <!--EMAIL-->
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" [(ngModel)]="editEmployee.email" name="email" class="form-control"
+                                id="email" placeholder="Email" />
+                        </div>
+                        <!--JOB TITLE-->
+                        <div class="form-group">
+                            <label for="phone">Job title</label>
+                            <input type="text" [(ngModel)]="editEmployee.jobTitle" name="jobTitle" class="form-control"
+                                id="jobTitle" placeholder="Job title" />
+                        </div>
+                        <!--PHONE #-->
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone</label>
+                            <input type="tel" maxlength="12" [(ngModel)]="editEmployee.phoneNumber" name="phoneNumber"
+                                class="form-control" id="phoneNumber" placeholder="Phone" />
+                        </div>
+                        <!--IMAGE URL-->
+                        <div class="form-group">
+                            <label for="phone">Image URL</label>
+                            <input type="text" [(ngModel)]="editEmployee.imageUrl" name="imageUrl" class="form-control"
+                                id="imageUrl" placeholder="Image URL" />
+                        </div>
+                        <!--GENDER-->
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender" name="gender" value="Male" />
+                                <label class="form-check-label" for="gender">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender2" name="gender" value="Female" />
+                                <label class="form-check-label" for="gender2">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender3" name="gender" value="Others" />
+                                <label class="form-check-label" for="gender3">Others</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender4" name="gender" value="Prefer Not To Say" />
+                                <label class="form-check-label" for="gender4">Prefer Not To Say</label>
+                            </div>
+                        </div>
+                        <!--FORM FOOTER-->
+                        <div class="modal-footer">
+                            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">
+                                Close
+                            </button>
+                            <button (click)="onUpdateEmployee(editForm.value)" data-dismiss="modal"
+                                class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--DELETE MODAL BOX-->
+    <div *ngIf="deleteModalBox" class="modal fade" id="deleteEmployee" tabindex="-1" role="dialog"
+        aria-labelledby="deleteEmployeeLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteEmployeeLabel">Delete Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to delete employee {{ deleteEmployee?.firstName | uppercase}}?
+                    </p>
+                    <!--FORM FOOTER-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            No
+                        </button>
+                        <button (click)="onDeleteEmployee(deleteEmployee.id)" class="btn btn-danger"
+                            data-dismiss="modal">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div *ngIf="addModalBox" class="modal fade" id="addEmployee" tabindex="-1" role="dialog"
+        aria-labelledby="addEmployeeLabel" data-toggle="modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeLabel">Add Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
+                        <!--FIRST & LAST NAME-->
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" ngModel name="firstName" class="form-control" id="firstName"
+                                placeholder="First Name" required />
+                            <label for="lastName">Last Name</label>
+                            <input type="text" ngModel name="lastName" class="form-control" id="lastName"
+                                placeholder="Last Name" required />
+                        </div>
+                        <!--EMAIL-->
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email"
+                                required />
+                        </div>
+                        <!--JOB TITLE-->
+                        <div class="form-group">
+                            <label for="phone">Job title</label>
+                            <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile"
+                                placeholder="Job title" required />
+                        </div>
+                        <!--PHONE #-->
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input maxlength="12" type="tel" ngModel name="phoneNumber" class="form-control"
+                                id="phoneNumber" placeholder="479-306-1760" required />
+                        </div>
+                        <!--IMAGE URL-->
+                        <div class="form-group">
+                            <label for="phone">Image URL</label>
+                            <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl"
+                                placeholder="https://" required />
+                        </div>
+                        <!--GENDER-->
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio1"
+                                    value="Male" />
+                                <label class="form-check-label" for="inlineRadio1">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio2"
+                                    value="Female" />
+                                <label class="form-check-label" for="inlineRadio2">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio3"
+                                    value="Others" />
+                                <label class="form-check-label" for="inlineRadio3">Others</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" ngModel name="gender" id="inlineRadio4"
+                                    value="Prefer Not To Say" />
+                                <label class="form-check-label" for="inlineRadio4">Prefer Not To Say</label>
+                            </div>
+                        </div>
+                        <!--FORM FOOTER-->
+                        <div class="modal-footer">
+                            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification for no employees -->
+    <div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">NO EMPLOYEES!</h4>
+            <p>No Employees were found.</p>
+        </div>
+    </div>
+</div>

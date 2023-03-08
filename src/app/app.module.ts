@@ -17,11 +17,17 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
+import { TableViewComponent } from './table-view/table-view.component';
+import { HomeViewComponent } from './home-view/home-view.component';
+import { EmployeesComponent } from './employees/employees.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    TableViewComponent,
+    HomeViewComponent,
+    EmployeesComponent,
   ],
   imports: [
     BrowserModule,

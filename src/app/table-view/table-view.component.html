@@ -1,0 +1,169 @@
+<div class="container" id="main-container">
+    <div class="row">
+        <div class="col-md-3">
+            <button onClick="history.back()">Go Back</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th (click)="sortNameAZ()">First Name</th>
+                    <th (click)="sortNameZA()">Last Name</th>
+                    <th>Email</th>
+                    <th>Job Title</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let employee of employees">
+                <tr>
+                    <td>{{employee.firstName}}</td>
+                    <td>{{employee.lastName}}</td>
+                    <td>{{employee.email}}</td>
+                    <td>{{employee.jobTitle}}</td>
+                    <td>{{employee.gender}}</td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" id="buttonSubmit">
+                            <button (click)="openModal(employee, 'edit')" (click)="setGender(employee.gender)"
+                                type="button" class="btn btn-primary block" data-toggle="modal"
+                                data-target="#editEmployee">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button (click)="openModal(employee, 'delete')" type="button" class="btn btn-danger block"
+                            data-toggle="modal" data-target="#deleteEmployee">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--EDIT MODAL BOX-->
+    <div *ngIf="editModalBox" class="modal fade" id="editEmployee" tabindex="-1" role="dialog"
+        aria-labelledby="editEmployeeLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!--FORM HEADER-->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeLabel">
+                        Edit Employee: {{ editEmployee.firstName | uppercase }} {{editEmployee.lastName | uppercase}}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!--FORM BODY-->
+                <div class="modal-body">
+                    <form #editForm="ngForm">
+                        <!--FIRST & LAST NAME-->
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" [(ngModel)]="editEmployee.firstName" name="firstName"
+                                class="form-control" id="firstName" aria-describedby="emailHelp"
+                                placeholder="First Name" />
+                            <label for="lastName">Last Name</label>
+                            <input type="text" [(ngModel)]="editEmployee.lastName" name="lastName" class="form-control"
+                                id="lastName" aria-describedby="emailHelp" placeholder="Name" />
+                        </div>
+                        <!--HIDDEN USER CODE-->
+                        <input type="hidden" [(ngModel)]="editEmployee.id" name="id" class="form-control" id="id"
+                            placeholder="Email" />
+                        <input type="hidden" [(ngModel)]="editEmployee.employeeCode" name="employeeCode"
+                            class="form-control" id="userCode" placeholder="Email" />
+                        <!--EMAIL-->
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" [(ngModel)]="editEmployee.email" name="email" class="form-control"
+                                id="email" placeholder="Email" />
+                        </div>
+                        <!--JOB TITLE-->
+                        <div class="form-group">
+                            <label for="phone">Job title</label>
+                            <input type="text" [(ngModel)]="editEmployee.jobTitle" name="jobTitle" class="form-control"
+                                id="jobTitle" placeholder="Job title" />
+                        </div>
+                        <!--PHONE #-->
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone</label>
+                            <input type="tel" maxlength="12" [(ngModel)]="editEmployee.phoneNumber" name="phoneNumber"
+                                class="form-control" id="phoneNumber" placeholder="Phone" />
+                        </div>
+                        <!--IMAGE URL-->
+                        <div class="form-group">
+                            <label for="phone">Image URL</label>
+                            <input type="text" [(ngModel)]="editEmployee.imageUrl" name="imageUrl" class="form-control"
+                                id="imageUrl" placeholder="Image URL" />
+                        </div>
+                        <!--GENDER-->
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender" name="gender" value="Male" />
+                                <label class="form-check-label" for="gender">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender2" name="gender" value="Female" />
+                                <label class="form-check-label" for="gender2">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender3" name="gender" value="Others" />
+                                <label class="form-check-label" for="gender3">Others</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" [(ngModel)]="editEmployee.gender"
+                                    id="gender4" name="gender" value="Prefer Not To Say" />
+                                <label class="form-check-label" for="gender4">Prefer Not To Say</label>
+                            </div>
+                        </div>
+                        <!--FORM FOOTER-->
+                        <div class="modal-footer">
+                            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">
+                                Close
+                            </button>
+                            <button (click)="onUpdateEmployee(editForm.value)" data-dismiss="modal"
+                                class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--DELETE MODAL BOX-->
+    <div *ngIf="deleteModalBox" class="modal fade" id="deleteEmployee" tabindex="-1" role="dialog"
+        aria-labelledby="deleteEmployeeLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteEmployeeLabel">Delete Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to delete employee {{ deleteEmployee?.firstName | uppercase}}?
+                    </p>
+                    <!--FORM FOOTER-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            No
+                        </button>
+                        <button (click)="onDeleteEmployee(deleteEmployee.id)" class="btn btn-danger"
+                            data-dismiss="modal">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
