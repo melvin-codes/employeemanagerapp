@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Example Images
 
-Go to Wiki to see some examples images of the project
+Go to Wiki to see some examples images of the project [Wiki](https://github.com/melvin-codes/employeemanagerapp/wiki)
 
 ## Development server
 
